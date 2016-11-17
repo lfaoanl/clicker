@@ -84,6 +84,7 @@
     var balance = 0;
     var perSecond = 0.00;
     var counter = 60;
+    var cursor = 1;
     var store = [
         {
             name: "clicker",
@@ -102,19 +103,20 @@
 
             var img = "<img src=\"imgs/"+store[i].name+".png\" width=\"50px\">";
             document.getElementById("bought-"+store[i].name).innerHTML += img;
-            var storeItem = document.getElementById("item-" + i);
-
+            var storeItem = document.getElementById("item-" + i).children;
+            storeItem[1].innerHTML = store[i].amount;
+            storeItem[2].innerHTML = store[i].cost;
 
         }
     }
 
     window.onload = function () {
         button.addEventListener("click", function () {
-            balance++;
+            balance += cursor;
         });
 
         for (var i = 0; i < store.length; i++) {
-            ulStore.innerHTML += "<li onclick=\"return buyItem(" + i + ");\" id=\"item-"+i+"\">" + store[i].name + "<span class=\"subtitle\">" + store[i].perSecond + " per second</span><span class=\"" + store[i].amount + "\"></span><span class=\"cost\">" + store[i].cost + "</span></li>";
+            ulStore.innerHTML += "<li onclick=\"return buyItem(" + i + ");\" id=\"item-"+i+"\">" + store[i].name + "<span class=\"subtitle\">" + store[i].perSecond + " per second</span><span class=\"amount\">" + store[i].amount + "</span><span class=\"cost\">" + store[i].cost + "</span></li>";
             document.getElementById("bought").innerHTML += "<div id=\"bought-" + store[i].name + "\"></div>";
         }
 
@@ -122,8 +124,8 @@
             counter++;
             if (counter > 60) counter = 0;
             if (counter == 60) {
-                balance += perSecond;
             }
+                balance += perSecond / 60;
             document.getElementById("amount").innerHTML = Math.round(balance * 100) / 100;
 
         }, 12);
