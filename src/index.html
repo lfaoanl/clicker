@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        img:hover,
+        ul:hover {
+            cursor: pointer;
+        }
+
+        #button {
+            transition: all .2s linear;
+        }
+
+        #button:active {
+            transform: scale(0.98) !important;
+        }
+
+        #button:hover,
+        #store ul li:active {
+            transform: scale(1.02);
+        }
+
+        #store {
+            float: left;
+            width: 200px;
+        }
+
+        #store ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        #store ul li {
+            background-color: #2e2e2e;
+            color: #e2e2e2;
+            padding: .5em .25em .8em .5em;
+            border-bottom: 1px solid white;
+        }
+
+        #store ul li:hover {
+            background-color: #e2e2e2;
+            color: #2e2e2e;
+        }
+
+        .subtitle {
+            color: grey;
+            font-size: 0.7em;
+            position: relative;
+            top: 1em;
+            left: -4em;
+        }
+
+        .cost {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="store">
+        <ul id="ul-store">
+        </ul>
+    </div>
+    <center>
+        <span id="amount">0</span>
+        <div>
+            <img src="imgs/junior.png" id="button" width="200px ">
+            <div id="bought"></div>
+        </div>
+    </center>
+</body>
+<script>
+    var button = document.getElementById("button");
+    var ulStore = document.getElementById("ul-store");
+    var balance = 0;
+    var perSecond = 0.00;
+    var counter = 60;
+    var store = [
+        {
+            name: "clicker",
+            cost: 20,
+            perSecond: 0.1,
+            amount: 0
+        }
+    ];
+
+    function buyItem(i) {
+        if (store[i].cost <= balance) {
+            balance -= store[i].cost;
+            store[i].cost = Math.round(store[i].cost * 108) / 100;
+            store[i].amount++;
+            perSecond += store[i].perSecond;
+
+            var img = "<img src=\"imgs/"+store[i].name+".png\" width=\"50px\">";
+            document.getElementById("bought-"+store[i].name).innerHTML += img;
+            var storeItem = document.getElementById("item-" + i);
+
+
+        }
+    }
+
+    window.onload = function () {
+        button.addEventListener("click", function () {
+            balance++;
+        });
+
+        for (var i = 0; i < store.length; i++) {
+            ulStore.innerHTML += "<li onclick=\"return buyItem(" + i + ");\" id=\"item-"+i+"\">" + store[i].name + "<span class=\"subtitle\">" + store[i].perSecond + " per second</span><span class=\"" + store[i].amount + "\"></span><span class=\"cost\">" + store[i].cost + "</span></li>";
+            document.getElementById("bought").innerHTML += "<div id=\"bought-" + store[i].name + "\"></div>";
+        }
+
+        setInterval(function () {
+            counter++;
+            if (counter > 60) counter = 0;
+            if (counter == 60) {
+                balance += perSecond;
+            }
+            document.getElementById("amount").innerHTML = Math.round(balance * 100) / 100;
+
+        }, 12);
+    };
+</script>
+
+</html>
