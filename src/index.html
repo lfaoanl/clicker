@@ -83,7 +83,6 @@
     var ulStore = document.getElementById("ul-store");
     var balance = 0;
     var perSecond = 0.00;
-    var counter = 60;
     var cursor = 1;
     var store = [
         {
@@ -102,11 +101,11 @@
             perSecond += store[i].perSecond;
 
             var img = "<img src=\"imgs/"+store[i].name+".png\" width=\"50px\">";
-            document.getElementById("bought-"+store[i].name).innerHTML += img;
             var storeItem = document.getElementById("item-" + i).children;
+
+            document.getElementById("bought-"+store[i].name).innerHTML += img;
             storeItem[1].innerHTML = store[i].amount;
             storeItem[2].innerHTML = store[i].cost;
-
         }
     }
 
@@ -121,11 +120,7 @@
         }
 
         setInterval(function () {
-            counter++;
-            if (counter > 60) counter = 0;
-            if (counter == 60) {
-            }
-                balance += perSecond / 60;
+            balance += perSecond / 60;
             document.getElementById("amount").innerHTML = Math.round(balance * 100) / 100;
 
         }, 12);
